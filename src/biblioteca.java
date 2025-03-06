@@ -4,54 +4,52 @@ public class biblioteca {
     ArrayList<livro> acervo = new ArrayList<>();
     ArrayList<usuario> usuarios = new ArrayList<>();
 
-    private void adicionarUsuario(usuario humano) {
-        usuarios.add(humano);
+    void adicionarUsuario(usuario humano) {
+        this.usuarios.add(humano);
     }
 
-    private void cadastrarLivro(livro livrinho) {
-        acervo.add(livrinho);
+     void cadastrarLivro(livro livrinho) {
+        this.acervo.add(livrinho);
     }
 
-    private int catalivro(int id) {
+    int cataLivro(int id) {
         boolean existencia = false;
         int i = 0;
 
-        for (; i < acervo.size(); i++) {
-            if (acervo.get(i).id == id)
+        for (; i < this.acervo.size(); i++) {
+            if (this.acervo.get(i).id == id){
                 existencia = true;
+                break;
+            }
         }
-        if (existencia)
-            return i;
-        else
-            return -1;
-
+        return (existencia)? (i) : (-1);
     }
 
-    private int catausuario(int id) {
+    int catausuario(int id) {
         boolean existencia = false;
         int i = 0;
 
-        for (; i < usuarios.size(); i++) {
-            if (usuarios.get(i).id == id)
+        for (; i < this.usuarios.size(); i++) {
+            if (this.usuarios.get(i).id == id){
                 existencia = true;
+                break;
+            }
         }
-        if (existencia)
-            return i;
-        else
-            return -1;
+        return (existencia)? (i) : (-1);
+
     }
 
-    private void alugar(int idlivro, int idusuario) {
+    void alugar(int idlivro, int idusuario) {
         boolean existe = acervo.stream().anyMatch(livro -> livro.id == idlivro);
         boolean existe2 = usuarios.stream().anyMatch(usuario -> usuario.id == idusuario);
 
         if (existe && existe2) {
-            int indice = catalivro(idlivro);
+            int indice = cataLivro(idlivro);
             int indice2 = catausuario(idusuario);
 
-            if (!acervo.get(indice).emprestimo) {
-                acervo.get(indice).emprestimo = true;
-                usuarios.get(indice2).LivrosEmprestados.add(acervo.get(indice));
+            if (!this.acervo.get(indice).emprestimo) {
+                this.acervo.get(indice).emprestimo = true;
+                this.usuarios.get(indice2).LivrosEmprestados.add(acervo.get(indice));
             } else
                 System.out.println("Livro ja alugado");
         } else {
@@ -59,19 +57,19 @@ public class biblioteca {
         }
     }
 
-    private void devolverLivro(int idlivro, int idusuario) {
-        boolean existe = acervo.stream().anyMatch(livro -> livro.id == idlivro);
-        boolean existe2 = usuarios.stream().anyMatch(usuario -> usuario.id == idusuario);
+    void devolverLivro(int idlivro, int idusuario) {
+        boolean existe = this.acervo.stream().anyMatch(livro -> livro.id == idlivro);
+        boolean existe2 = this.usuarios.stream().anyMatch(usuario -> usuario.id == idusuario);
 
         if (existe && existe2) {
-            int indice = catalivro(idlivro);
+            int indice = cataLivro(idlivro);
             int indice2 = catausuario(idusuario);
-            boolean emprestou = usuarios.stream().anyMatch(usuario -> usuario.getLivrosEmprestados().stream().anyMatch(livro -> livro.getid() == idlivro));
+            boolean emprestou = this.usuarios.stream().anyMatch(usuario -> usuario.getLivrosEmprestados().stream().anyMatch(livro -> livro.getid() == idlivro));
 
             if (indice >= 0 && indice2 >= 0) {
-                if (acervo.get(indice).emprestimo && emprestou) {
-                    acervo.get(indice).emprestimo = false;
-                    usuarios.get(indice2).LivrosEmprestados.remove(idlivro);
+                if (this.acervo.get(indice).emprestimo && emprestou) {
+                    this.acervo.get(indice).emprestimo = false;
+                    this.usuarios.get(indice2).LivrosEmprestados.remove(idlivro);
                 } else {
                     System.out.println("Livro não alugado ainda");
                 }
@@ -82,21 +80,19 @@ public class biblioteca {
     }
         public void listarlivroslivres(){
             System.out.println("Livros disponiveis para aluguel:");
-            for(int i = 0; i<acervo.size();i++){
-                if(!acervo.get(i).emprestimo){
-                    System.out.printf("%d: %s\n",i,acervo.get(i).nome);
+            for(int i = 0; i<this.acervo.size();i++){
+                if(!this.acervo.get(i).emprestimo){
+                    System.out.printf("%d: %s\n",i,this.acervo.get(i).nome);
                 }
             }
         }
     public void listalivrosemprestados(){
         System.out.println("Livros indisponiveis/alugados:");
-        for(int i = 0; i<acervo.size();i++){
-            if(!acervo.get(i).emprestimo){
-                System.out.printf("%d: %s\n",i,acervo.get(i).nome);
+        for(int i = 0; i<this.acervo.size();i++){
+            if(!this.acervo.get(i).emprestimo){
+                System.out.printf("%d: %s\n",i,this.acervo.get(i).nome);
             }
         }
     }
-
-
 }
 
