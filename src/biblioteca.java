@@ -68,8 +68,15 @@ public class biblioteca {
 
             if (indice >= 0 && indice2 >= 0) {
                 if (this.acervo.get(indice).emprestimo && emprestou) {
+
                     this.acervo.get(indice).emprestimo = false;
-                    this.usuarios.get(indice2).LivrosEmprestados.remove(idlivro);
+
+                    int cata = this.cataLivro(idlivro);//pegar o indice na lista da biblioteca pelo id, caso um item seja removido numa posicao anterior
+                    this.usuarios.get(indice2).LivrosEmprestados.remove(cata);
+
+                    int cata2 = this.usuarios.get(indice2).cataLivroU(idlivro);//buscando o indice do livro dentro da lista no usuario
+                    this.usuarios.get(indice2).LivrosEmprestados.remove(cata2);
+
                 } else {
                     System.out.println("Livro não alugado ainda");
                 }
@@ -80,6 +87,7 @@ public class biblioteca {
     }
         public void listarlivroslivres(){
             System.out.println("Livros disponiveis para aluguel:");
+
             for(int i = 0; i<this.acervo.size();i++){
                 if(!this.acervo.get(i).emprestimo){
                     System.out.printf("%d: %s\n",i,this.acervo.get(i).nome);
@@ -88,8 +96,9 @@ public class biblioteca {
         }
     public void listalivrosemprestados(){
         System.out.println("Livros indisponiveis/alugados:");
+
         for(int i = 0; i<this.acervo.size();i++){
-            if(!this.acervo.get(i).emprestimo){
+            if(this.acervo.get(i).emprestimo){
                 System.out.printf("%d: %s\n",i,this.acervo.get(i).nome);
             }
         }
