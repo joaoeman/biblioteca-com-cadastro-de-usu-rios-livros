@@ -1,14 +1,14 @@
 public class livro {
     String nome;
     String autor;
-    boolean emprestimo;
+    estadoemprestimo estado;
     int id;
 
-    public livro(String nome, String autor, boolean emprestimo, int id){
+    public livro(String nome, String autor, estadoemprestimo emprestimo, int id){
         this.id = id;
         this.nome = nome;
         this.autor = autor;
-        this.emprestimo = emprestimo;
+        this.estado = estadoemprestimo.LIVRE;
     }
     public int getid(){
         return id;

@@ -47,8 +47,8 @@ public class biblioteca {
             int indice = cataLivro(idlivro);
             int indice2 = catausuario(idusuario);
 
-            if (!this.acervo.get(indice).emprestimo) {
-                this.acervo.get(indice).emprestimo = true;
+            if (!this.acervo.get(indice).estado.retornalogico()) {
+                this.acervo.get(indice).estado = estadoemprestimo.EMPRESTADO;
                 this.usuarios.get(indice2).LivrosEmprestados.add(acervo.get(indice));
             } else
                 System.out.println("Livro ja alugado");
@@ -67,9 +67,9 @@ public class biblioteca {
             boolean emprestou = this.usuarios.stream().anyMatch(usuario -> usuario.getLivrosEmprestados().stream().anyMatch(livro -> livro.getid() == idlivro));
 
             if (indice >= 0 && indice2 >= 0) {
-                if (this.acervo.get(indice).emprestimo && emprestou) {
+                if (this.acervo.get(indice).estado.retornalogico() && emprestou) {
 
-                    this.acervo.get(indice).emprestimo = false;
+                    this.acervo.get(indice).estado = estadoemprestimo.LIVRE;
 
                     int cata = this.cataLivro(idlivro);//pegar o indice na lista da biblioteca pelo id, caso um item seja removido numa posicao anterior
                     this.usuarios.get(indice2).LivrosEmprestados.remove(cata);
@@ -89,7 +89,7 @@ public class biblioteca {
             System.out.println("Livros disponiveis para aluguel:");
 
             for(int i = 0; i<this.acervo.size();i++){
-                if(!this.acervo.get(i).emprestimo){
+                if(!this.acervo.get(i).estado.retornalogico()){
                     System.out.printf("%d: %s\n",i,this.acervo.get(i).nome);
                 }
             }
@@ -98,7 +98,7 @@ public class biblioteca {
         System.out.println("Livros indisponiveis/alugados:");
 
         for(int i = 0; i<this.acervo.size();i++){
-            if(this.acervo.get(i).emprestimo){
+            if(this.acervo.get(i).estado.retornalogico()){
                 System.out.printf("%d: %s\n",i,this.acervo.get(i).nome);
             }
         }
